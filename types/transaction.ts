@@ -1,5 +1,5 @@
 export type Transaction = {
-  id: number;
+  _id: string;          // match MongoDB
   title: string;
   amount: number;
   type: "income" | "expense";

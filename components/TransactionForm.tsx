@@ -24,7 +24,7 @@ export default function TransactionForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white shadow-md rounded-lg p-6 w-80 flex flex-col gap-3 mt-8"
+       className="bg-white shadow-md rounded-lg p-6 w-80 lg:w-[40rem] flex flex-col gap-3 mt-8"
     >
       <label className="text-gray-700 font-medium">Title</label>
       <input
