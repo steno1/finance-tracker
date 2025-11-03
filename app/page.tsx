@@ -20,19 +20,19 @@ export default function Home() {
   // -----------------------------
   // ✅ Protected Route
   // -----------------------------
-  // This ensures only logged-in users with a token can access this page
   useEffect(() => {
-    const token = localStorage.getItem("token"); // check if token exists
-    const user = localStorage.getItem("user"); // check if user exists
+    const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
+
     if (!token || !user) {
-      router.push("/login"); // redirect to login if not authenticated
+      router.push("/login");
     } else {
-      setUserName(JSON.parse(user).name); // set username if logged in
+      setUserName(JSON.parse(user).name);
     }
   }, [router]);
 
   // -----------------------------
-  // Logout function
+  // Logout
   // -----------------------------
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -42,11 +42,18 @@ export default function Home() {
   };
 
   // -----------------------------
-  // Fetch transactions from API
+  // ✅ Fetch transactions
   // -----------------------------
   const fetchTransactions = async () => {
     try {
-      const res = await fetch("/api/transactions");
+      const token = localStorage.getItem("token");
+
+      const res = await fetch("/api/transactions", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       const data = await res.json();
       setTransactions(data);
     } catch (err) {
@@ -59,18 +66,20 @@ export default function Home() {
   }, []);
 
   // -----------------------------
-  // Calculate totals
+  // Totals
   // -----------------------------
   const income = transactions
     .filter((t) => t.type === "income")
     .reduce((sum, t) => sum + t.amount, 0);
+
   const expenses = transactions
     .filter((t) => t.type === "expense")
     .reduce((sum, t) => sum + t.amount, 0);
+
   const balance = income - expenses;
 
   // -----------------------------
-  // Reset form after submit
+  // Reset form
   // -----------------------------
   const resetForm = () => {
     setTitle("");
@@ -80,7 +89,7 @@ export default function Home() {
   };
 
   // -----------------------------
-  // Add/Edit transaction
+  // ✅ Add OR Edit
   // -----------------------------
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -89,25 +98,35 @@ export default function Home() {
       return;
     }
 
+    const token = localStorage.getItem("token");
+
     if (editId) {
-      // Edit existing transaction
+      // ✅ Edit existing transaction
       const res = await fetch(`/api/transactions?id=${editId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ title, amount: Number(amount), type }),
       });
+
       const updatedTransaction = await res.json();
       setTransactions(
         transactions.map((t) => (t._id === editId ? updatedTransaction : t))
       );
       setEditId(null);
     } else {
-      // Create new transaction
+      // ✅ Create new transaction
       const res = await fetch("/api/transactions", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ title, amount: Number(amount), type }),
       });
+
       const newTransaction = await res.json();
       setTransactions([newTransaction, ...transactions]);
     }
@@ -116,17 +135,27 @@ export default function Home() {
   };
 
   // -----------------------------
-  // Delete transaction
+  // ✅ Delete
   // -----------------------------
   const handleDelete = async (_id: string) => {
     if (!confirm("Are you sure you want to delete this transaction?")) return;
+
     try {
-      const res = await fetch(`/api/transactions?id=${_id}`, { method: "DELETE" });
+      const token = localStorage.getItem("token");
+
+      const res = await fetch(`/api/transactions?id=${_id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       if (!res.ok) {
         const err = await res.json();
         toast.error(err.error || "Delete failed");
         return;
       }
+
       toast.success("Transaction deleted");
       fetchTransactions();
     } catch (error) {
@@ -135,7 +164,7 @@ export default function Home() {
   };
 
   // -----------------------------
-  // Edit transaction click
+  // Edit button click
   // -----------------------------
   const handleEdit = (item: Transaction) => {
     setEditId(item._id);
@@ -145,27 +174,28 @@ export default function Home() {
   };
 
   // -----------------------------
-  // Dashboard UI
+  // UI
   // -----------------------------
   return (
     <main className="min-h-screen bg-gray-100 flex flex-col items-center justify-start p-6">
-{/* ---------------- Dashboard Header ---------------- */}
-<div className="bg-white rounded-lg p-4 shadow-md w-full max-w-4xl mb-6 flex items-start justify-between">
-  <div>
-    <h2 className="text-xl font-semibold text-blue-700">
-      Welcome back, {userName || "Guest"}!
-    </h2>
-    <p className="text-gray-500 ">Track your income and expenses below</p>
-  </div>
-  <button
-    onClick={handleLogout}
-    className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded -mt-1"
-  >
-    Logout
-  </button>
-</div>
 
-      {/* Summary Cards */}
+      {/* ---------------- Header ---------------- */}
+      <div className="bg-white rounded-lg p-4 shadow-md w-full max-w-4xl mb-6 flex items-start justify-between">
+        <div>
+          <h2 className="text-xl font-semibold text-blue-700">
+            Welcome back, {userName || "Guest"}!
+          </h2>
+          <p className="text-gray-500 ">Track your income and expenses below</p>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded -mt-1"
+        >
+          Logout
+        </button>
+      </div>
+
+      {/* Summary */}
       <div className="w-full max-w-4xl flex flex-wrap justify-between gap-4 mb-8">
         <div className="bg-white shadow-md rounded-lg p-6 text-center flex-1">
           <p className="text-sm text-gray-500">Income</p>
@@ -186,7 +216,7 @@ export default function Home() {
         <TransactionChart data={transactions} />
       </div>
 
-      {/* Transaction Form */}
+      {/* Form */}
       <TransactionForm
         title={title}
         amount={amount}
@@ -197,7 +227,7 @@ export default function Home() {
         setType={setType}
       />
 
-      {/* Transaction List */}
+      {/* List */}
       <TransactionList
         transactions={transactions}
         handleEdit={handleEdit}
