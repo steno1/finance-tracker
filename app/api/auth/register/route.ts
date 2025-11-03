@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongoose";
-import User from "@/models/User";
+import User from "../../../../models/user";
+
 
 connectDB();
 

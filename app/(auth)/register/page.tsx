@@ -6,7 +6,7 @@ import { toast } from "sonner";
 
 export default function RegisterPage() {
   const router = useRouter();
-
+const [name, setName]=useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!email ||!name || !password) {
       toast.error("Please fill all fields");
       return;
     }
@@ -24,7 +24,7 @@ export default function RegisterPage() {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email,name, password }),
       });
 
       const data = await res.json();
@@ -53,6 +53,15 @@ export default function RegisterPage() {
         <h2 className="text-xl font-semibold text-center mb-6">Register</h2>
 
         <form onSubmit={handleRegister} className="flex flex-col gap-4">
+
+             <input
+    type="text"
+    placeholder="Name"
+    className="border p-2 rounded"
+    value={name}
+    onChange={(e) => setName(e.target.value)}
+  />
+
 
           <input
             type="email"

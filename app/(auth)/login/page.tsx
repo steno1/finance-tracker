@@ -30,8 +30,11 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.message);
+         toast.error(data.error || "Something went wrong");
       } else {
+         // Save token and user info for later use
+  localStorage.setItem("token", data.token);
+  localStorage.setItem("user", JSON.stringify(data.user));
         toast.success("Login successful");
         router.push("/");
       }
@@ -79,7 +82,7 @@ export default function LoginPage() {
           </button>
 
           <a
-            href="/forgot-password"
+            href="/forgotten-password"
             className="text-sm text-blue-600 hover:underline text-center"
           >
             Forgot Password?

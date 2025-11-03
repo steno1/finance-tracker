@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongoose";
-import User from "@/models/User";
+import User from "../../../../models/user";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 
@@ -16,23 +16,23 @@ export async function POST(req: NextRequest) {
     if (!user)
       return NextResponse.json({ error: "User not found" }, { status: 404 });
 
-    // Create reset token
+    // Generate reset token
     const resetToken = crypto.randomBytes(32).toString("hex");
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpire = Date.now() + 1000 * 60 * 30; // 30 minutes
+    user.resetPasswordExpire = new Date(Date.now() + 1000 * 60 * 30); // 30 min
     await user.save();
 
     // Send email
+    const resetUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/reset-password/${resetToken}`;
+    const message = `Click here to reset your password: ${resetUrl}`;
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        pass: process.env.EMAIL_PASS, // Use app password if 2FA enabled
       },
     });
-
-    const resetUrl = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/reset-password/${resetToken}`;
-    const message = `Click here to reset your password: ${resetUrl}`;
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
@@ -41,9 +41,11 @@ export async function POST(req: NextRequest) {
       text: message,
     });
 
+    console.log("Reset link sent:", resetUrl);
+
     return NextResponse.json({ message: "Password reset email sent" });
   } catch (error) {
-    console.error(error);
+    console.error("Forgot Password Error:", error);
     return NextResponse.json({ error: "Failed to send reset email" }, { status: 500 });
   }
 }
