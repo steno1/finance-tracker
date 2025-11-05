@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 connectDB();
 
-// ✅ Helper to get userId from token
+//  Helper to get userId from token
 const getUserFromToken = (req: NextRequest) => {
   try {
     const authHeader = req.headers.get("authorization");
@@ -20,7 +20,7 @@ const getUserFromToken = (req: NextRequest) => {
   }
 };
 
-// ✅ GET — Get transactions belonging to logged-in user
+//  GET — Get transactions belonging to logged-in user
 export async function GET(req: NextRequest) {
   try {
     await connectDB();
@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// ✅ POST — Create a transaction with attached userId
+//  POST — Create a transaction with attached userId
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// ✅ DELETE — Delete only users own transaction
+// DELETE — Delete only users own transaction
 export async function DELETE(req: NextRequest) {
   try {
     await connectDB();
@@ -108,7 +108,7 @@ export async function DELETE(req: NextRequest) {
   }
 }
 
-// ✅ PUT — Update only logged-in user transactions
+//  PUT — Update only logged-in user transactions
 export async function PUT(req: NextRequest) {
   try {
     await connectDB();

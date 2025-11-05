@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💰 Finance Tracker App
 
-## Getting Started
+A simple and responsive web application to track income and expenses. Built with **Next.js**, **React**, **TypeScript**, **Tailwind CSS**, and **Recharts**. Features user authentication, transaction management, and visual charts.
 
-First, run the development server:
+---
+
+## 🛠 Features
+
+- **User Authentication**
+  - Login
+  - Logout
+  - Reset Password
+  - Forgot Password
+
+- **Transactions**
+  - Add, Edit, Delete transactions
+  - Track both income and expenses
+
+- **Visual Dashboard**
+  - Monthly income vs expense chart
+  - Summary of balance, income, and expenses
+
+- **Responsive UI**
+  - Mobile, tablet, and desktop-friendly design
+
+---
+
+## 🧰 Tech Stack
+
+- **Frontend:** Next.js, React, TypeScript, Tailwind CSS  
+- **Charts:** Recharts  
+- **Backend / API:** Next.js API routes  
+- **Authentication:** JWT  
+- **Notifications:** Sonner  
+
+---
+
+## ⚡ Getting Started
+
+### 1. Clone the repository
 
 ```bash
+git clone https://github.com/steno1/finance-tracker 
+cd finance-tracker
+2. Install dependencies
+
+npm install
+# or
+yarn install
+3. Create .env file
+env
+
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+4. Run the development server
+
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Visit http://localhost:3000 to see the app in action.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+📝 Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+finance-tracker/
+├─ components/      # Reusable components (TransactionForm, TransactionList, TransactionChart)
+├─ models/          # Mongoose models
+├─ pages/api/        # API routes for transactions and auth
+├─ types/           # TypeScript types
+├─ public/          # Static assets
+├─ styles/          # Global CSS / Tailwind
+└─ README.md
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+🎯 Future Enhancements
+Categories for transactions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Multiple currency support
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Transaction filters and search
 
-## Deploy on Vercel
+Export data (CSV / PDF)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+🙏 Author
+Onu Princeley Toochukwu

@@ -49,10 +49,10 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md p-6 shadow rounded-md bg-white">
 
-        {/* App Name */}
+      
         <h1 className="text-2xl font-bold text-center mb-2">Finance Tracker</h1>
 
-        {/* Page title */}
+    
         <h2 className="text-xl font-semibold text-center mb-6">Login</h2>
 
         <form onSubmit={handleLogin} className="flex flex-col gap-4">

@@ -10,7 +10,7 @@ type Props = {
 
 export default function TransactionList({ transactions, handleEdit, handleDelete }: Props) {
   return (
-    <div  className="bg-white shadow-md rounded-lg p-6 w-80 lg:w-[40rem] flex flex-col gap-3 mt-8">
+    <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-4xl flex flex-col gap-3 mt-8 mx-4 sm:mx-auto">
       <h2 className="text-xl mb-4 font-semibold text-center">Transactions</h2>
       
 

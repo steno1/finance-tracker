@@ -17,9 +17,6 @@ export default function Home() {
   const [type, setType] = useState("income");
   const [editId, setEditId] = useState<string | null>(null);
 
-  // -----------------------------
-  // ✅ Protected Route
-  // -----------------------------
   useEffect(() => {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
@@ -31,9 +28,7 @@ export default function Home() {
     }
   }, [router]);
 
-  // -----------------------------
-  // Logout
-  // -----------------------------
+  
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -41,9 +36,7 @@ export default function Home() {
     router.push("/login");
   };
 
-  // -----------------------------
-  // ✅ Fetch transactions
-  // -----------------------------
+
   const fetchTransactions = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -65,9 +58,7 @@ export default function Home() {
     fetchTransactions();
   }, []);
 
-  // -----------------------------
-  // Totals
-  // -----------------------------
+  
   const income = transactions
     .filter((t) => t.type === "income")
     .reduce((sum, t) => sum + t.amount, 0);
@@ -78,9 +69,7 @@ export default function Home() {
 
   const balance = income - expenses;
 
-  // -----------------------------
-  // Reset form
-  // -----------------------------
+  
   const resetForm = () => {
     setTitle("");
     setAmount("");
@@ -88,9 +77,7 @@ export default function Home() {
     setEditId(null);
   };
 
-  // -----------------------------
-  // ✅ Add OR Edit
-  // -----------------------------
+ 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title.trim() || !amount || !type) {
@@ -134,9 +121,7 @@ export default function Home() {
     resetForm();
   };
 
-  // -----------------------------
-  // ✅ Delete
-  // -----------------------------
+
   const handleDelete = async (_id: string) => {
     if (!confirm("Are you sure you want to delete this transaction?")) return;
 
@@ -163,9 +148,6 @@ export default function Home() {
     }
   };
 
-  // -----------------------------
-  // Edit button click
-  // -----------------------------
   const handleEdit = (item: Transaction) => {
     setEditId(item._id);
     setTitle(item.title);
@@ -173,9 +155,7 @@ export default function Home() {
     setType(item.type);
   };
 
-  // -----------------------------
-  // UI
-  // -----------------------------
+  
   return (
     <main className="min-h-screen bg-gray-100 flex flex-col items-center justify-start p-6">
 
@@ -212,9 +192,10 @@ export default function Home() {
       </div>
 
       {/* Chart */}
-      <div className="bg-white shadow-md rounded-lg p-6 w-80 lg:w-[40rem] flex flex-col gap-3 mb-8">
-        <TransactionChart data={transactions} />
-      </div>
+<div className="bg-white shadow-md rounded-lg p-6 w-full max-w-4xl flex flex-col gap-3 mb-8 mx-4 sm:mx-auto">
+  <TransactionChart data={transactions} />
+</div>
+
 
       {/* Form */}
       <TransactionForm

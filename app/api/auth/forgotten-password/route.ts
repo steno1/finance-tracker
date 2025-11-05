@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     // Generate reset token
     const resetToken = crypto.randomBytes(32).toString("hex");
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpire = new Date(Date.now() + 1000 * 60 * 30); // 30 min
+    user.resetPasswordExpire = new Date(Date.now() + 1000 * 60 * 30); 
     await user.save();
 
     // Send email
