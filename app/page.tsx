@@ -37,22 +37,31 @@ export default function Home() {
   };
 
 
-  const fetchTransactions = async () => {
-    try {
-      const token = localStorage.getItem("token");
+ const fetchTransactions = async () => {
+  try {
+    const token = localStorage.getItem("token");
 
-      const res = await fetch("/api/transactions", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    const res = await fetch("/api/transactions", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      const data = await res.json();
+    const data = await res.json();
+
+    // ✅ Make sure transactions is always an array
+    if (Array.isArray(data)) {
       setTransactions(data);
-    } catch (err) {
-      toast.error("Failed to fetch transactions");
+    } else if (data.transactions && Array.isArray(data.transactions)) {
+      setTransactions(data.transactions);
+    } else {
+      setTransactions([]); // fallback
     }
-  };
+  } catch (err) {
+    toast.error("Failed to fetch transactions");
+    setTransactions([]); // ensure array even on error
+  }
+};
 
   useEffect(() => {
     fetchTransactions();
